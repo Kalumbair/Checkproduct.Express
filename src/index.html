@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <title>Чек с покупками</title>
+</head>
+<body>
+    <h1>Чек с покупками</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>№</td>
+                <td>Наименование</td>
+                <td>Кол-во</td>
+                <td>Цена</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+    <tbody id ="checklist"></tbody>
+    </table>
+    <script>
+        fetch("/list")
+        .then(res => res.json())
+        .then(result =>{
+            let sum=0;
+            for(let i = 0; i < result.length; i++)
+            {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${i+1}</td>
+                                    <td>${result[i].name}</td>
+                                    <td>${result[i].kol}</td>
+                                    <td>${result[i].count}</td>
+                                    <td><input type="button" value="Изменить" 
+                                        data-id="${result[i].id}" onclick="EditHandler(this)"/></td>
+                                    <td><input type="button" value="Удалить" data-id="${result[i].id}" 
+                                        onclick="DeleteHandler(this)"/></td>`;
+                document.querySelector('#checklist').append(newRow);
+                sum+=result[i].kol*result[i].count;
+            }
+            document.querySelector('#sum').innerHTML=`Общая сумма: ${sum}`;
+        });
+    </script>
+    <p id="sum"> </p>
+    <input id ="badd" value="Добавить" type="button" required>
+    <div id="fon" style="display: none;width: 100%;height: 100%; background-color: grey; opacity: 0.5; left: 0%;top: 0%;position: absolute;"
+    onclick="return false"></div>
+    <form id="fadd" style="border-style: solid;width: 10cm;position: absolute;background-color: white;display: none;" data-id="-1">
+        <h3 text-align=center>Товар</h3>
+        <table>
+            <tr>
+                <td><label>Наименование</label></td>
+                <td><input id="fname" type="text" required></td>
+            </tr>
+            <tr>
+                <td><label>Кол-во</label></td>
+                <td><input id="fkol" type="number" min="1" required></td>
+            </tr>
+            <tr>
+                <td><label>Цена</label></td>
+                <td><input id="fcount"  type="text" required></td>
+            </tr>     
+            <tr>
+                <td><input value="Добавить" type="submit" ></td>
+                <td><input id="fbreset" value="Очистка" type="reset" ></td>
+                <td><input id="fbcancel" value="Закрыть" type="button" ></td>
+            </tr>    
+        </table>
+    </form>
+    <script src=script.js></script>
+</body>

@@ -1,7 +1,7 @@
 var express = require('express');
 const path = require('path');
 var app = express();
-const product = [];
+const product = []; 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
